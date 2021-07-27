@@ -11,10 +11,10 @@ const voteSectionElem = document.getElementById('all-products');
 const leftProductImgElem = document.getElementById('left_product_img');
 const centerProductImgElem = document.getElementById('center_product_img');
 const rightProductImgElem = document.getElementById('right_product_img');
-
-const rightProducttH2Elem = document.getElementById('right_product_h2');
-const centerProductH2Elem = document.getElementById('center_product_h2');
 const leftProductH2Elem = document.getElementById('left_product_h2');
+const centerProductH2Elem = document.getElementById('center_product_h2');
+const rightProductH2Elem = document.getElementById('right_product_h2');
+
 
 let leftProduct = null;
 let centerProduct = null;
@@ -44,7 +44,7 @@ function getThreeProducts() {
   leftProduct = Product.allProducts[leftIndex];
 
   let centerIndex = Math.floor(Math.random() * Product.allProducts.length);
-  leftProduct = Product.allProducts[centerIndex];
+  centerProduct = Product.allProducts[centerIndex];
 
   let rightIndex = Math.floor(Math.random() * Product.allProducts.length);
   rightProduct = Product.allProducts[rightIndex];
@@ -62,7 +62,7 @@ function getThreeProducts() {
 function renderTheProducts() {
   leftProduct.renderProduct(leftProductImgElem, leftProductH2Elem);
   centerProduct.renderProduct(centerProductImgElem, centerProductH2Elem); 
-  rightProduct.renderProduct(rightProductImgElem, rightProducttH2Elem); 
+  rightProduct.renderProduct(rightProductImgElem, rightProductH2Elem); 
 }
 
 function renderResults() {
@@ -70,7 +70,7 @@ function renderResults() {
 
   for (let product of Product.allProducts) {
     let liElem = document.createElement('li');
-    liElem.textContent = '${product.name}: ${product.votes}';
+    liElem.textContent = `${product.name}: ${product.votes}`;
     ulElem.appendChild(liElem)
   }
 }
@@ -78,8 +78,9 @@ function renderResults() {
 function handleClick(e) {
   // alert(e.target.id);
   let imageClicked = e.target.id;
-  if (imageClicked === 'right_product_image' || imageClicked === 'left_product_image' || imageClicked === 'center_product_image') {
+  if (imageClicked === 'right_product_image' || imageClicked === 'center_product_image' || imageClicked === 'left_product_image') {
     clickCounter++;
+
     if (imageClicked === 'right_product_image') {
       rightProduct.votes++;
       console.log(rightProduct)
