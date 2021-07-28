@@ -45,56 +45,58 @@ Product.prototype.renderProduct = function (img, h2) {
 // picks 3 unique images that don't match the previous set
 
 // lecture version
-// function picksThreeProducts() {
-//   const doNotUse = [currentRight, currentLeft, currentCenter];
-//   while (doNotUse.includes(currentLeft)) {
-//     let leftIndex = Math.floor(Math.random() * Product.allProducts.length);
-//     currentLeft = Product.allProducts[leftIndex];
-//   }
-//   doNotUse.push(currentLeft)
 
-//   while (doNotUse.includes(currentRight)) {
-//     let rightIndex = Math.floor(Math.random() * Product.allProducts.length);
-//     currentRight = Product.allProducts[rightIndex];
-//   }
-//   doNotUse.push(currentRight)
+function getThreeProducts() {
+  const doNotUse = [leftProduct, centerProduct, rightProduct];
+  while (doNotUse.includes(leftProduct)) {
+    let leftIndex = Math.floor(Math.random() * Product.allProducts.length);
+    leftProduct = Product.allProducts[leftIndex];
+  }
+  doNotUse.push(leftProduct)
 
-//   while (doNotUse.includes(currentCenter)) {
-//     let centerIndex = Math.floor(Math.random() * Product.allProducts.length);
-//     currentCenter = Product.allProducts[centerIndex];
-    
-//   }
-//   doNotUse.push(currentCenter)
-//   console.log(doNotUse)
-// }
+  while (doNotUse.includes(centerProduct)) {
+    let centerIndex = Math.floor(Math.random() * Product.allProducts.length);
+    centerProduct = Product.allProducts[centerIndex];
+  }
+  doNotUse.push(centerProduct)
+
+  while (doNotUse.includes(rightProduct)) {
+    let rightIndex = Math.floor(Math.random() * Product.allProducts.length);
+    rightProduct = Product.allProducts[rightIndex];
+  }
+  doNotUse.push(rightProduct)
+  console.log(doNotUse)
+}
 
 // render three images
 // function renderThreeProducts() {
-//   currentCenter.renderProduct(centerProductImgElem, centerProductH2Elem);
-//   currentLeft.renderProduct(leftProductImgElem, leftProductH2Elem);
-//   currentRight.renderProduct(rightProductImgElem, rightProductH2Elem);
+//   centerProduct.renderProduct(centerProductImgElem, centerProductH2Elem);
+//   leftProduct.renderProduct(leftProductImgElem, leftProductH2Elem);
+//   rightProduct.renderProduct(rightProductImgElem, rightProductH2Elem);
+// }
+// ---------------------------------------------------------- //
+
+// function getThreeProducts() {
+//   // picks 3 products at random from an array of products
+//   let leftIndex = Math.floor(Math.random() * Product.allProducts.length);
+//   leftProduct = Product.allProducts[leftIndex];
+
+//   let centerIndex = Math.floor(Math.random() * Product.allProducts.length);
+//   centerProduct = Product.allProducts[centerIndex];
+
+//   let rightIndex = Math.floor(Math.random() * Product.allProducts.length);
+//   rightProduct = Product.allProducts[rightIndex];
+
+//   while (rightProduct === null || rightProduct === leftProduct || rightProduct === centerProduct) {
+//     rightIndex = Math.floor(Math.random() * Product.allProducts.length);
+//     rightProduct = Product.allProducts[rightIndex];
+//   }
+//   while (leftProduct === null || leftProduct === rightProduct || leftProduct === centerProduct) {
+//     leftIndex = Math.floor(Math.random() * Product.allProducts.length);
+//     leftProduct = Product.allProducts[leftIndex];
+//   }
 // }
 
-function getThreeProducts() {
-  // picks 3 products at random from an array of products
-  let leftIndex = Math.floor(Math.random() * Product.allProducts.length);
-  leftProduct = Product.allProducts[leftIndex];
-
-  let centerIndex = Math.floor(Math.random() * Product.allProducts.length);
-  centerProduct = Product.allProducts[centerIndex];
-
-  let rightIndex = Math.floor(Math.random() * Product.allProducts.length);
-  rightProduct = Product.allProducts[rightIndex];
-
-  while (rightProduct === null || rightProduct === leftProduct || rightProduct === centerProduct) {
-    rightIndex = Math.floor(Math.random() * Product.allProducts.length);
-    rightProduct = Product.allProducts[rightIndex];
-  }
-  while (leftProduct === null || leftProduct === rightProduct || leftProduct === centerProduct) {
-    leftIndex = Math.floor(Math.random() * Product.allProducts.length);
-    leftProduct = Product.allProducts[leftIndex];
-  }
-}
 // render 3 products (images)
 function renderTheProducts() {
   leftProduct.renderProduct(leftProductImgElem, leftProductH2Elem);
@@ -117,7 +119,7 @@ function handleClick(e) {
   let imageClicked = e.target.id;
   if (imageClicked === 'right_product_img' || imageClicked === 'center_product_img' || imageClicked === 'left_product_img') {
     clickCounter++;
-    console.log('test');
+    // console.log('test');
     // update vote rounds
     // rounds--;
     if (imageClicked === 'right_product_img') {
