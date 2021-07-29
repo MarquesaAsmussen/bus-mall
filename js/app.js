@@ -25,7 +25,7 @@ function Product(name, imgPath) {
   this.name = name;
   this.imgPath = imgPath;
   this.votes = 0;
-  // this.views = 0;
+  this.views = 0;
   // this function should not do external processes
 
   Product.allProducts.push(this);
@@ -37,8 +37,9 @@ Product.allProducts = [];
 // renders a single imaage and name
 Product.prototype.renderProduct = function (img, h2) {
   img.src = this.imgPath;
-  img.alt = this.name
+  img.alt = this.name;
   h2.textContent = this.name;
+  this.views++
 }
 
 //---------------Standard Global Functions----------//
@@ -68,35 +69,6 @@ function getThreeProducts() {
   console.log(doNotUse)
 }
 
-// render three images
-// function renderThreeProducts() {
-//   centerProduct.renderProduct(centerProductImgElem, centerProductH2Elem);
-//   leftProduct.renderProduct(leftProductImgElem, leftProductH2Elem);
-//   rightProduct.renderProduct(rightProductImgElem, rightProductH2Elem);
-// }
-// ---------------------------------------------------------- //
-
-// function getThreeProducts() {
-//   // picks 3 products at random from an array of products
-//   let leftIndex = Math.floor(Math.random() * Product.allProducts.length);
-//   leftProduct = Product.allProducts[leftIndex];
-
-//   let centerIndex = Math.floor(Math.random() * Product.allProducts.length);
-//   centerProduct = Product.allProducts[centerIndex];
-
-//   let rightIndex = Math.floor(Math.random() * Product.allProducts.length);
-//   rightProduct = Product.allProducts[rightIndex];
-
-//   while (rightProduct === null || rightProduct === leftProduct || rightProduct === centerProduct) {
-//     rightIndex = Math.floor(Math.random() * Product.allProducts.length);
-//     rightProduct = Product.allProducts[rightIndex];
-//   }
-//   while (leftProduct === null || leftProduct === rightProduct || leftProduct === centerProduct) {
-//     leftIndex = Math.floor(Math.random() * Product.allProducts.length);
-//     leftProduct = Product.allProducts[leftIndex];
-//   }
-// }
-
 // render 3 products (images)
 function renderTheProducts() {
   leftProduct.renderProduct(leftProductImgElem, leftProductH2Elem);
@@ -113,6 +85,39 @@ function renderResults() {
     ulElem.appendChild(liElem)
   }
 }
+
+function makeChart() {
+  const ctx = document.getElementById('chart').getContext('2d');
+  let productNames = [];
+  let productVotes = [];
+  let colorArray = [];
+  for (let product of Product.allProducts) {
+    productNames.push(product.name);
+    productVotes.push(product.votes);
+  }
+
+  const productChart = new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: productNames,
+      datasets: [{
+        label: '# of votes',
+        data: productVotes,
+        backgroundColor: colorArray,
+        borderColor: colorArray,
+        borderWidth: 1
+      }]
+    },
+    options: {
+      scales: {
+        y: {
+          beginAtZero: true
+        }
+      }
+    }
+  });
+}
+
 // click handler
 function handleClick(e) {
   console.log(e.target.id);
@@ -138,10 +143,12 @@ function handleClick(e) {
     renderTheProducts();
   }
   if (clickCounter === 10) {
-    // alert('show the goat totals')    
+    // alert('show the goat totals')
+    voteSectionElem.removeEventListener('click', handleClick);  
     renderResults();
-    voteSectionElem.removeEventListener('click', handleClick);
+    makeChart();
   }
+
 }
 
 //--------------------Listener---------------------//
@@ -172,3 +179,7 @@ new Product('Wine Glass', './img/wine-glass.jpg');
 
 getThreeProducts();
 renderTheProducts();
+
+// --------------------Charts---------------------//
+
+
