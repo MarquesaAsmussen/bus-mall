@@ -78,7 +78,6 @@ function renderTheProducts() {
 // renders results
 function renderResults() {
   ulElem.textContent = '';
-
   for (let product of Product.allProducts) {
     let liElem = document.createElement('li');
     liElem.textContent = `${product.name}: ${product.votes}`;
@@ -135,9 +134,6 @@ function makeChart() {
     options: chartOptions
   });
 }
-
-
-
 
 
 function putVotesInStorage() {
