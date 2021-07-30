@@ -88,57 +88,57 @@ function renderResults() {
 
 function makeChart() {
   const ctx = document.getElementById('chart').getContext('2d');
-  let productNames = [];
+  let productName = [];
   let productVotes = [];
-  let colorArray = [];
-  for (let product of Product.allProducts) {
-    productNames.push(product.name);
-    productVotes.push(product.votes);
-  }
-
-  const productChart = new Chart(ctx, {
-    type: 'bar',
-    data: {
-      labels: productNames,
-      datasets: [{
-        label: '# of votes',
-        data: productVotes,
-        backgroundColor: colorArray,
-        borderColor: colorArray,
-        borderWidth: 1
-      }]
-    },
-    options: {
+  let productViews = [];
+    for( let votes of Product.allProducts) {
+      productName.push(votes.name);
+      productVotes.push(votes.votes);
+      productViews.push(votes.views);
+    }
+    let pwdVotes = {
+      label: 'Votes',
+      data: productVotes,
+      backgroundColor: ['rgba(255, 136, 122, 100)'],
+      borderColor: ['rgba(222, 99, 84, 87)'],
+      borderWidth: 1,
+      yAxisID: "y-axis-votes"
+    };
+    let pwdViews = {
+      label: 'Views',
+      data: productViews,
+      backgroundColor: ['rgba(26, 145, 84, 57)'],
+      borderColor: ['rgba(96, 224, 158, 88)'],
+      borderWidth: 1,
+      yAxisID: "y-axis-views"
+    };
+    let chartData = {
+      labels: productName,
+      datasets: [pwdVotes, pwdViews]
+    };
+  let chartOptions = {
       scales: {
-        y: {
-          beginAtZero: true
-        }
+        xAxes: [{
+          barPercentage: 1,
+          categoryPercentage: 0.6
+        }],
+        yAxes: [{
+          id: "y-axis-votes"
+        }, {
+          id: "y-axis-views"
+        }]
       }
     }
+  let barChart = new Chart(ctx, {
+    type: 'bar',
+    data: chartData,
+    options: chartOptions
   });
 }
 
 
-// // put votes in storage
-// function putVotesInStorage() {
-//   // console.log(UserVotes.allVotes)
-//   let stringifiedArray = JSON.stringify(Product.allProducts);
-//   // console.log(stringifiedArray);
-//   // store data in storage with the key storedVotes
-//   localStorage.setItem('storedVotes', stringifiedArray);
-// }
 
-// function putVotesInStorage() {
-//   let votesInStorage = localStorage.getItem('storedVotes');
-//   if (votesInStorage) {
-//     let parsedVotes = JSON.parse(votesInStorage);
-//     console.log(votesInStorage);
-//     let totalVotes = [];
-//     for (let i = 0; i < parsedVotes.length; i++) {
-//     }
-//   }
-  
-// }
+
 
 function putVotesInStorage() {
   let votesInStorage = localStorage.getItem('storedVotes');
@@ -156,20 +156,6 @@ function putVotesInStorage() {
     localStorage.setItem('storedVotes', stringifiedArray);
   }
 }
-
-//------------//
-// function getVotesFromStorage() {
-//   let votesInStorage = localStorage.getItem('storedVotes');
-//   if (votesInStorage) {
-//     let parsedVotes = JSON.parse(votesInStorage);
-//     console.log(parsedVotes);
-//     let stringifiedArray = JSON.stringify()
-//   }
-  
-// }
-
-
-
 
 // click handler
 function handleClick(e) {
@@ -203,18 +189,6 @@ function handleClick(e) {
     makeChart();
   }
 }
-
-
-// make a constructor for vote results
-// function UserVotes() {
-  
-// }
-// get results from storage
-// get out of storage
-// put in storage
-// then call results of storage
-// modify event listener
-// handle button
 
 //--------------------Listener---------------------//
 // listener on container for pictures
