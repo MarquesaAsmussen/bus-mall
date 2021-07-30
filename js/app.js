@@ -30,8 +30,8 @@ function Product(name, imgPath) {
 
   Product.allProducts.push(this);
 }
-
 Product.allProducts = [];
+
 
 //-------------------Prototype Methods---------------//
 // renders a single imaage and name
@@ -88,34 +88,73 @@ function renderResults() {
 
 function makeChart() {
   const ctx = document.getElementById('chart').getContext('2d');
-  let productNames = [];
+  let productName = [];
   let productVotes = [];
-  let colorArray = [];
-  for (let product of Product.allProducts) {
-    productNames.push(product.name);
-    productVotes.push(product.votes);
-  }
-
-  const productChart = new Chart(ctx, {
-    type: 'bar',
-    data: {
-      labels: productNames,
-      datasets: [{
-        label: '# of votes',
-        data: productVotes,
-        backgroundColor: colorArray,
-        borderColor: colorArray,
-        borderWidth: 1
-      }]
-    },
-    options: {
+  let productViews = [];
+    for( let votes of Product.allProducts) {
+      productName.push(votes.name);
+      productVotes.push(votes.votes);
+      productViews.push(votes.views);
+    }
+    let pwdVotes = {
+      label: 'Votes',
+      data: productVotes,
+      backgroundColor: ['rgba(255, 136, 122, 100)'],
+      borderColor: ['rgba(222, 99, 84, 87)'],
+      borderWidth: 1,
+      yAxisID: "y-axis-votes"
+    };
+    let pwdViews = {
+      label: 'Views',
+      data: productViews,
+      backgroundColor: ['rgba(26, 145, 84, 57)'],
+      borderColor: ['rgba(96, 224, 158, 88)'],
+      borderWidth: 1,
+      yAxisID: "y-axis-views"
+    };
+    let chartData = {
+      labels: productName,
+      datasets: [pwdVotes, pwdViews]
+    };
+  let chartOptions = {
       scales: {
-        y: {
-          beginAtZero: true
-        }
+        xAxes: [{
+          barPercentage: 1,
+          categoryPercentage: 0.6
+        }],
+        yAxes: [{
+          id: "y-axis-votes"
+        }, {
+          id: "y-axis-views"
+        }]
       }
     }
+  let barChart = new Chart(ctx, {
+    type: 'bar',
+    data: chartData,
+    options: chartOptions
   });
+}
+
+
+
+
+
+function putVotesInStorage() {
+  let votesInStorage = localStorage.getItem('storedVotes');
+  if (votesInStorage) {
+    let parsedVotes = JSON.parse(votesInStorage);
+    console.log(parsedVotes);
+    for (let i = 0; i < parsedVotes.length; i++) {
+      Product.allProducts[i].votes = parsedVotes[i].votes + Product.allProducts[i].votes;
+      Product.allProducts[i].views = parsedVotes[i].views + Product.allProducts[i].views;
+    }
+    let stringifiedArray = JSON.stringify(Product.allProducts);
+    localStorage.setItem('storedVotes', stringifiedArray);
+  } else {
+    let stringifiedArray = JSON.stringify(Product.allProducts);
+    localStorage.setItem('storedVotes', stringifiedArray);
+  }
 }
 
 // click handler
@@ -143,12 +182,12 @@ function handleClick(e) {
     renderTheProducts();
   }
   if (clickCounter === 10) {
-    // alert('show the goat totals')
-    voteSectionElem.removeEventListener('click', handleClick);  
+    // alert('show the totals')
+    voteSectionElem.removeEventListener('click', handleClick); 
+    putVotesInStorage();
     renderResults();
     makeChart();
   }
-
 }
 
 //--------------------Listener---------------------//
@@ -157,29 +196,32 @@ voteSectionElem.addEventListener('click', handleClick);
 
 //--------------------Call Functions----------------//
 
-new Product('Bag', './img/bag.jpg');
-new Product('Banana', './img/banana.jpg');
-new Product('Bathroom', './img/bathroom.jpg');
-new Product('Boots', './img/boots.jpg');
-new Product('Breakfast', './img/breakfast.jpg');
-new Product('Bubblegum', './img/bubblegum.jpg');
-new Product('Chair', './img/chair.jpg');
-new Product('Cthulhu', './img/cthulhu.jpg');
-new Product('Dog-Duck', './img/dog-duck.jpg');
-new Product('Dragon', './img/dragon.jpg');
-new Product('Pen', './img/pen.jpg');
-new Product('Pet-Sweep', './img/pet-sweep.jpg');
-new Product('Scissors', './img/scissors.jpg');
-new Product('Shark', './img/shark.jpg');
-new Product('Sweep', './img/sweep.png');
-new Product('Tauntaun', './img/tauntaun.jpg');
-new Product('Unicorn', './img/unicorn.jpg');
-new Product('Water Can', './img/water-can.jpg');
-new Product('Wine Glass', './img/wine-glass.jpg');
+function makeProducts() {
+  new Product('Bag', './img/bag.jpg');
+  new Product('Banana', './img/banana.jpg');
+  new Product('Bathroom', './img/bathroom.jpg');
+  new Product('Boots', './img/boots.jpg');
+  new Product('Breakfast', './img/breakfast.jpg');
+  new Product('Bubblegum', './img/bubblegum.jpg');
+  new Product('Chair', './img/chair.jpg');
+  new Product('Cthulhu', './img/cthulhu.jpg');
+  new Product('Dog-Duck', './img/dog-duck.jpg');
+  new Product('Dragon', './img/dragon.jpg');
+  new Product('Pen', './img/pen.jpg');
+  new Product('Pet-Sweep', './img/pet-sweep.jpg');
+  new Product('Scissors', './img/scissors.jpg');
+  new Product('Shark', './img/shark.jpg');
+  new Product('Sweep', './img/sweep.png');
+  new Product('Tauntaun', './img/tauntaun.jpg');
+  new Product('Unicorn', './img/unicorn.jpg');
+  new Product('Water Can', './img/water-can.jpg');
+  new Product('Wine Glass', './img/wine-glass.jpg');
+}
 
+// getVotesFromStorage()
+makeProducts();
 getThreeProducts();
 renderTheProducts();
 
 // --------------------Charts---------------------//
-
 
